@@ -1,0 +1,37 @@
+service: cinema-ticket-purchasing-platform
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  environment:
+    NODE_ENV: dev
+
+plugins:
+  - serverless-plugin-typescript 
+  - serverless-offline
+
+package:
+  include:
+    - config/.env.dev
+
+functions:
+  createAuditorium:
+    handler: app/handler.createAuditorium
+    events:
+      - http:
+          path: auditorium
+          method: post
+  purchaseSeat:
+    handler: app/handler.purchaseSeat
+    events:
+      - http:
+          path: auditorium/{id}
+          method: post
+  findAvailableSeats:
+    handler: app/handler.findAvailableSeats
+    events:
+      - http:
+          path: auditorium/{id}
+          method: get
